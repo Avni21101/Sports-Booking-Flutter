@@ -47,6 +47,7 @@ dependencies:
   slang_flutter: ^4.5.0
   slang: ^4.5.0
   dio: ^5.8.0+1
+  supabase_flutter: ^2.8.4
   # svg generator
 
 dev_dependencies:

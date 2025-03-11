@@ -1,12 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sports_booking/core/data/services/hive_services.dart';
-import 'app/injection.dart';
+import 'package:sports_booking/app/config/secrets.dart';
 import 'firebase_options.dart' as firebase_option;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> bootStrap() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: firebase_option.DefaultFirebaseOptions.currentPlatform);
-  getIt.registerSingleton<IHiveService>(const HiveService());
-  await getIt<IHiveService>().init();
+  await Supabase.initialize(url: SupabaseKeys.projectUrl, anonKey: SupabaseKeys.anonPublicAPIKey);
 }
