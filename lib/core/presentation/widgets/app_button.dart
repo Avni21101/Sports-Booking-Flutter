@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sports_booking/app_ui/widgets/text.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({super.key, required this.buttonWidget, required this.onTap});

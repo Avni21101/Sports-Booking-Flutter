@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sports_booking/core/data/src/api_enum.dart';
 import 'package:sports_booking/modules/authentication/repository/auth_repository.dart';
 

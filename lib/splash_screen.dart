@@ -1,8 +1,6 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sports_booking/app/route/app_router.gr.dart';
-import 'package:sports_booking/modules/authentication/screens/sign_up_screen.dart';
 import 'app_ui/widgets/text.dart';
 
 @RoutePage()
