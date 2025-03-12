@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> navigate() async {
     await Future<void>.delayed(Duration(seconds: 2));
     if (!mounted) return;
-    await context.replaceRoute(const HomeRoute());
+    await context.replaceRoute(const BottomNavigationBarRoute());
   }
 
   @override

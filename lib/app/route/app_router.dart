@@ -6,13 +6,20 @@ import 'package:sports_booking/app/route/auth_guard.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-    AutoRoute(page: SplashRoute.page, initial: true),
+    AutoRoute(page: SplashRoute.page, initial: true, path: '/'),
 
     /// Authentication
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: SignUpRoute.page),
 
-    /// Home Bottom bar
-    AutoRoute(page: HomeRoute.page, guards: [AuthGuard()]),
+    /// Bottom bar Route
+    AutoRoute(
+      page: BottomNavigationBarRoute.page,
+      children: [
+        AutoRoute(page: HomeRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: MyBookingsRoute.page),
+        AutoRoute(page: ProfileRoute.page),
+      ],
+    ),
   ];
 }
