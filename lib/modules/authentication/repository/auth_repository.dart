@@ -59,7 +59,6 @@ class AuthRepository implements IAuthRepository {
       return unit;
     },
     (error, stackTrace) {
-      print('error error meow mewo $error');
       return APIFailure(error, stackTrace);
     },
   );
