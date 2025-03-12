@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:fpdart/fpdart.dart';
+import 'package:sports_booking/app/helpers/google_auth_helper.dart';
 import 'package:sports_booking/core/data/src/api_failure.dart';
 import 'package:sports_booking/modules/authentication/model/auth_request_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,6 +11,8 @@ abstract interface class IAuthRepository {
   TaskEither<Failure, Unit> login(AuthRequestModel authRequestModel);
 
   TaskEither<Failure, Unit> signup(AuthRequestModel authRequestModel);
+
+  TaskEither<Failure, Unit> googleSignIn();
 
   Future<bool> logout();
 }
@@ -46,6 +49,20 @@ class AuthRepository implements IAuthRepository {
 
         return unit;
       }, (error, stackTrace) => APIFailure(error, stackTrace));
+
+  @override
+  TaskEither<Failure, Unit> googleSignIn() => makeGoogleSignInRequest();
+
+  TaskEither<Failure, Unit> makeGoogleSignInRequest() => TaskEither.tryCatch(
+    () async {
+      await GoogleAuthInHelper.signInWithGoogle();
+      return unit;
+    },
+    (error, stackTrace) {
+      print('error error meow mewo $error');
+      return APIFailure(error, stackTrace);
+    },
+  );
 
   @override
   Future<bool> logout() async {

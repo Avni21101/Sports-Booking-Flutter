@@ -32,6 +32,9 @@ class LoginScreen extends StatelessWidget implements AutoRouteWrapper {
         if (state.apiStatus == ApiStatus.loaded) {
           context.router.replaceAll([HomeRoute()]);
         }
+        if (state.apiStatus == ApiStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not sign In')));
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -66,6 +69,12 @@ class LoginScreen extends StatelessWidget implements AutoRouteWrapper {
                             : AppText(text: 'Login'),
                     onTap: () async {
                       await context.read<LoginCubit>().onSubmit();
+                    },
+                  ),
+                  AppButton(
+                    buttonWidget: AppText(text: 'Login with Google'),
+                    onTap: () async {
+                      await context.read<LoginCubit>().onGoogleSignIn();
                     },
                   ),
                   GestureDetector(

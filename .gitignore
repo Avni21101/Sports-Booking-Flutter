@@ -48,3 +48,5 @@ app.*.map.json
 /firebase.json
 /lib/app/route/app_router.gr.dart
 /lib/app/config/secrets.dart
+
+/pubspec.lock

@@ -44,4 +44,12 @@ class LoginCubit extends Cubit<LoginState> {
       );
     }
   }
+
+  Future<void> onGoogleSignIn() async {
+    final signupEither = await _authenticationRepository.googleSignIn().run();
+    signupEither.fold(
+      (l) => emit(state.copyWith(apiStatus: ApiStatus.error)),
+      (r) => emit(state.copyWith(apiStatus: ApiStatus.loaded)),
+    );
+  }
 }
