@@ -9,8 +9,8 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: SplashRoute.page, initial: true, path: '/'),
 
     /// Authentication
-    AutoRoute(page: LoginRoute.page),
-    AutoRoute(page: SignUpRoute.page),
+    AutoRoute(page: LoginRoute.page, path: '/login'),
+    AutoRoute(page: SignUpRoute.page, path: '/signup'),
 
     /// Bottom bar Route
     AutoRoute(
@@ -21,5 +21,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: ProfileRoute.page),
       ],
     ),
+
+    AutoRoute(page: PlaceDetailRoute.page),
   ];
 }
