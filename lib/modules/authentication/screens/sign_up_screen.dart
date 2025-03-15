@@ -35,7 +35,7 @@ class SignUpScreen extends StatelessWidget implements AutoRouteWrapper {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: AppText.L(text: 'Sign up')),
+          appBar: AppBar(title: AppText.medium(text: 'Sign up')),
           body: Padding(
             padding: const EdgeInsets.all(Insets.medium16),
             child: Center(
@@ -72,7 +72,7 @@ class SignUpScreen extends StatelessWidget implements AutoRouteWrapper {
                     onTap: () async {
                       await context.replaceRoute(LoginRoute());
                     },
-                    child: AppText.L(text: 'Already have an account?'),
+                    child: AppText.medium(text: 'Already have an account?'),
                   ),
                 ],
               ),

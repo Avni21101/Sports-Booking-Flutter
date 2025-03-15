@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget implements AutoRouteWrapper {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppText.xsSemiBold(text: 'Profile Screen'),
+                AppText.regular(text: 'Profile Screen'),
                 AppButton(
                   buttonWidget:
                       state.apiStatus == ApiStatus.loading

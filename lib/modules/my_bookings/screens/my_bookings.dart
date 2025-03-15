@@ -8,6 +8,6 @@ class MyBookingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: AppText.XL('My Bookings'));
+    return const Center(child: AppText.large(text: 'My Bookings'));
   }
 }

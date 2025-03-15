@@ -3,19 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:sports_booking/app_ui/theme.dart';
 
-enum AppTextLevel {
-  title,
-  subTitle,
-  paragraph1,
-  paragraph2,
-  s,
-  xsSemiBold,
-  sSemiBold,
-  XL,
-  L,
-  brand,
-  regular10,
-}
+enum AppTextLevel { xxSmall, xSmall, small, regular, medium, large, xlarge }
 
 class AppText extends StatelessWidget {
   const AppText({
@@ -24,13 +12,13 @@ class AppText extends StatelessWidget {
     this.color,
     this.fontSize,
     this.maxLines,
-    this.level = AppTextLevel.paragraph1,
+    this.level = AppTextLevel.regular,
     this.isUnderLine,
     this.style,
     this.textAlign,
   });
 
-  const AppText.subTitle10({
+  const AppText.xxSmall({
     super.key,
     this.text,
     this.color,
@@ -39,9 +27,9 @@ class AppText extends StatelessWidget {
     this.isUnderLine,
     this.style,
     this.textAlign,
-  }) : level = AppTextLevel.subTitle;
+  }) : level = AppTextLevel.xxSmall;
 
-  const AppText.regular10({
+  const AppText.xSmall({
     super.key,
     this.text,
     this.color,
@@ -50,9 +38,9 @@ class AppText extends StatelessWidget {
     this.isUnderLine,
     this.style,
     this.textAlign,
-  }) : level = AppTextLevel.regular10;
+  }) : level = AppTextLevel.xSmall;
 
-  const AppText.paragraph({
+  const AppText.small({
     super.key,
     this.text,
     this.color,
@@ -61,9 +49,9 @@ class AppText extends StatelessWidget {
     this.isUnderLine,
     this.style,
     this.textAlign,
-  }) : level = AppTextLevel.paragraph1;
+  }) : level = AppTextLevel.small;
 
-  const AppText.base({
+  const AppText.regular({
     super.key,
     this.text,
     this.color,
@@ -72,9 +60,9 @@ class AppText extends StatelessWidget {
     this.isUnderLine,
     this.style,
     this.textAlign,
-  }) : level = AppTextLevel.title;
+  }) : level = AppTextLevel.regular;
 
-  const AppText.xs({
+  const AppText.medium({
     super.key,
     this.text,
     this.color,
@@ -83,9 +71,9 @@ class AppText extends StatelessWidget {
     this.isUnderLine,
     this.style,
     this.textAlign,
-  }) : level = AppTextLevel.paragraph1;
+  }) : level = AppTextLevel.medium;
 
-  const AppText.xsRegular({
+  const AppText.large({
     super.key,
     this.text,
     this.color,
@@ -94,9 +82,9 @@ class AppText extends StatelessWidget {
     this.isUnderLine,
     this.style,
     this.textAlign,
-  }) : level = AppTextLevel.paragraph2;
+  }) : level = AppTextLevel.large;
 
-  const AppText.sSemiBold({
+  const AppText.xlarge({
     super.key,
     this.text,
     this.color,
@@ -105,65 +93,7 @@ class AppText extends StatelessWidget {
     this.isUnderLine,
     this.style,
     this.textAlign,
-  }) : level = AppTextLevel.sSemiBold;
-
-  const AppText.L({
-    super.key,
-    this.text,
-    this.color,
-    this.fontSize,
-    this.maxLines,
-    this.isUnderLine,
-    this.style,
-    this.textAlign,
-  }) : level = AppTextLevel.L;
-
-  // ignore: non_constant_identifier_names
-  const AppText.XL(
-    String s, {
-    super.key,
-    this.text,
-    this.color,
-    this.fontSize,
-    this.maxLines,
-    this.isUnderLine,
-    this.style,
-    this.textAlign,
-  }) : level = AppTextLevel.XL;
-
-  const AppText.xsSemiBold({
-    super.key,
-    this.text,
-    this.color,
-    this.fontSize,
-    this.maxLines,
-    this.isUnderLine,
-    this.style,
-    this.textAlign,
-  }) : level = AppTextLevel.xsSemiBold;
-
-  const AppText.s({
-    super.key,
-    this.text,
-    this.color,
-    this.fontSize,
-    this.maxLines,
-    this.isUnderLine,
-    this.style,
-    this.textAlign,
-  }) : level = AppTextLevel.s;
-
-  /// Use this text in case you want to write something in Vepaar logo's font style
-  const AppText.brand({
-    super.key,
-    this.text,
-    this.color,
-    this.fontSize,
-    this.maxLines,
-    this.isUnderLine,
-    this.style,
-    this.textAlign,
-  }) : level = AppTextLevel.brand;
+  }) : level = AppTextLevel.xlarge;
 
   final String? text;
   final AppTextLevel level;
@@ -177,65 +107,33 @@ class AppText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.maybeOf(context);
-    final color =
-        this.color ??
-        () {
-          switch (level) {
-            case AppTextLevel.regular10:
-              return theme?.colors.black;
-            case AppTextLevel.paragraph1:
-            case AppTextLevel.xsSemiBold:
-              return theme?.colors.black;
-            case AppTextLevel.paragraph2:
-            case AppTextLevel.sSemiBold:
-              return theme?.colors.black;
-            case AppTextLevel.subTitle:
-              return theme?.colors.black;
-            case AppTextLevel.title:
-            case AppTextLevel.s:
-            case AppTextLevel.L:
-            case AppTextLevel.XL:
-            case AppTextLevel.brand:
-              return theme?.colors.black;
-          }
-        }();
     final style = () {
       switch (level) {
-        case AppTextLevel.regular10:
-          return theme?.typography.regular10;
-        case AppTextLevel.title:
-          return theme?.typography.title;
-        case AppTextLevel.subTitle:
-          return theme?.typography.subTitle10;
-        case AppTextLevel.paragraph1:
-          return theme?.typography.paragraph1;
-        case AppTextLevel.paragraph2:
-          return theme?.typography.xsRegular;
-        case AppTextLevel.s:
-          return theme?.typography.S;
-        case AppTextLevel.xsSemiBold:
-          return theme?.typography.xsSemiBold;
-        case AppTextLevel.sSemiBold:
-          return theme?.typography.sSemiBold;
-        case AppTextLevel.L:
-          return theme?.typography.L;
-        case AppTextLevel.XL:
-          return theme?.typography.XL;
-        case AppTextLevel.brand:
-          return theme?.typography.brand;
+        case AppTextLevel.xxSmall:
+          return theme?.typography.xxSmall;
+        case AppTextLevel.xSmall:
+          return theme?.typography.xSmall;
+        case AppTextLevel.small:
+          return theme?.typography.small;
+        case AppTextLevel.regular:
+          return theme?.typography.regular;
+        case AppTextLevel.medium:
+          return theme?.typography.medium;
+        case AppTextLevel.large:
+          return theme?.typography.large;
+        case AppTextLevel.xlarge:
+          return theme?.typography.xlarge;
       }
     }();
     return Text(
       text ?? '',
       textAlign: textAlign,
-      style: style
-          ?.copyWith(
-            color: theme?.colors.black,
-            fontSize: fontSize,
-            decoration: isUnderLine ?? false ? TextDecoration.underline : null,
-            decorationColor: color,
-          )
-          .merge(style),
+      style: style?.copyWith(
+        color: color ?? theme?.colors.black,
+        fontSize: fontSize,
+        decoration: isUnderLine ?? false ? TextDecoration.underline : null,
+        decorationColor: color,
+      ),
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
     );
