@@ -145,7 +145,6 @@ class BackgroundImage extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Image.asset('assets/skt.jpeg', fit: BoxFit.fitHeight),
         Image.asset(
           'assets/sport.jpg',
           height: size.height / 2,
