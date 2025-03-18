@@ -28,10 +28,8 @@ class ProfileScreen extends StatelessWidget implements AutoRouteWrapper {
               children: [
                 AppText.regular(text: 'Profile Screen'),
                 AppButton(
-                  buttonWidget:
-                      state.apiStatus == ApiStatus.loading
-                          ? CircularProgressIndicator()
-                          : AppText(text: 'Logout'),
+                  isLoading: state.apiStatus == ApiStatus.loading,
+                  label: 'Logout',
                   onTap: () async {
                     await context.read<ProfileCubit>().logout();
                   },

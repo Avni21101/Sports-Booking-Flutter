@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:sports_booking/core/data/src/api_enum.dart';
+import 'package:sports_booking/core/data/src/api_failure.dart';
 import 'package:sports_booking/core/domain/validators/email_validator.dart';
 import 'package:sports_booking/core/domain/validators/password_validator.dart';
 
@@ -22,27 +24,56 @@ class LoginCubit extends Cubit<LoginState> {
 
   void onPasswordChange(String value) {
     final password = PasswordValidator.dirty(value.trim());
-    emit(state.copyWith(password: password, isValid: Formz.validate([password])));
+    emit(
+      state.copyWith(password: password, isValid: Formz.validate([password])),
+    );
   }
 
   Future<void> onSubmit() async {
     final email = EmailValidator.dirty(state.email.value);
     final password = PasswordValidator.dirty(state.password.value);
     emit(
-      state.copyWith(email: email, password: password, isValid: Formz.validate([email, password])),
+      state.copyWith(
+        email: email,
+        password: password,
+        isValid: Formz.validate([email, password]),
+      ),
     );
 
     if (state.isValid) {
       emit(state.copyWith(apiStatus: ApiStatus.loading));
-      final signupEither =
-          await _authenticationRepository
-              .login(AuthRequestModel(email: state.email.value, password: state.password.value))
-              .run();
-      signupEither.fold(
+      final Either<Failure, Unit> authEither;
+      if (state.isAuthLoginType == true) {
+        authEither =
+            await _authenticationRepository
+                .login(
+                  AuthRequestModel(
+                    email: state.email.value,
+                    password: state.password.value,
+                  ),
+                )
+                .run();
+      } else {
+        authEither =
+            await _authenticationRepository
+                .signup(
+                  AuthRequestModel(
+                    email: state.email.value,
+                    password: state.password.value,
+                  ),
+                )
+                .run();
+      }
+
+      authEither.fold(
         (l) => emit(state.copyWith(apiStatus: ApiStatus.error)),
         (r) => emit(state.copyWith(apiStatus: ApiStatus.loaded)),
       );
     }
+  }
+
+  void onAuthTypeChange() {
+    emit(state.copyWith(isAuthLoginType: !state.isAuthLoginType));
   }
 
   Future<void> onGoogleSignIn() async {

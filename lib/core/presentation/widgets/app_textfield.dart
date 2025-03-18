@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sports_booking/app_ui/utils.dart';
 import 'package:sports_booking/app_ui/widgets/border_radius.dart';
 import 'package:sports_booking/app_ui/widgets/padding.dart';
 
@@ -45,18 +46,25 @@ class _AppTextFieldState extends State<AppTextField> {
       onChanged: widget.onChange,
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(left: Insets.small12),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppBorderRadius.medium16)),
+        contentPadding: const EdgeInsets.only(left: Insets.xsmall8),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppBorderRadius.small8),
+        ),
         errorText: widget.errorText,
         hintText: widget.hintText,
-
+        hintStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: context.colorScheme.grey,
+        ),
         suffixIcon:
             widget.isPasswordField
                 ? IconButton(
-                  // splashColor: context.colorScheme.primary50,
                   onPressed: toggleObscureText,
                   icon: Icon(
-                    shouldShowPassword ? Icons.visibility_off : Icons.visibility,
+                    shouldShowPassword
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                     // color: context.colorScheme.grey700,
                   ),
                 )

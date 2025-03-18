@@ -2,13 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sports_booking/app/route/app_router.gr.dart';
+import 'package:sports_booking/app_ui/utils.dart';
 import 'package:sports_booking/app_ui/widgets/padding.dart';
 import 'package:sports_booking/app_ui/widgets/text.dart';
 import 'package:sports_booking/core/data/src/api_enum.dart';
-import 'package:sports_booking/core/presentation/widgets/app_button.dart';
-import 'package:sports_booking/core/presentation/widgets/app_textfield.dart';
 import 'package:sports_booking/modules/authentication/bloc/login/login_cubit.dart';
 import 'package:sports_booking/modules/authentication/repository/auth_repository.dart';
+import 'package:sports_booking/modules/authentication/widgets/login_signup_container.dart';
+import 'dart:math' as math;
 
 @RoutePage()
 class LoginScreen extends StatelessWidget implements AutoRouteWrapper {
@@ -27,68 +28,152 @@ class LoginScreen extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return BlocConsumer<LoginCubit, LoginState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.apiStatus == ApiStatus.loaded) {
-          context.router.replaceAll([HomeRoute()]);
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          await context.router.replaceAll([HomeRoute()]);
         }
         if (state.apiStatus == ApiStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not sign In')));
+          if (context.mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Could not sign In')));
+          }
         }
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: AppText.medium(text: 'Sign up')),
-          body: Padding(
-            padding: const EdgeInsets.all(Insets.medium16),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: Insets.xsmall8,
-                children: [
-                  AppTextField(
-                    errorText: state.email.displayError != null ? 'Write valid email' : null,
-                    hintText: 'Enter Email',
-                    isPasswordField: false,
-                    onChange: (email) {
-                      context.read<LoginCubit>().onEmailChange(email);
-                    },
-                  ),
-                  AppTextField(
-                    errorText: state.password.displayError != null ? 'Write valid pass' : null,
-                    hintText: 'Enter password',
-                    isPasswordField: true,
-                    onChange: (password) {
-                      context.read<LoginCubit>().onPasswordChange(password);
-                    },
-                  ),
-                  AppButton(
-                    buttonWidget:
-                        state.apiStatus == ApiStatus.loading
-                            ? CircularProgressIndicator()
-                            : AppText(text: 'Login'),
-                    onTap: () async {
-                      await context.read<LoginCubit>().onSubmit();
-                    },
-                  ),
-                  AppButton(
-                    buttonWidget: AppText(text: 'Login with Google'),
-                    onTap: () async {
-                      await context.read<LoginCubit>().onGoogleSignIn();
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      await context.replaceRoute(SignUpRoute());
-                    },
-                    child: AppText.medium(text: "Don't have an account?"),
-                  ),
-                ],
-              ),
+          resizeToAvoidBottomInset: false,
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/app_logos/app_logo.png',
+                  height: 40,
+                  width: 40,
+                ),
+                AppText.medium(
+                  text: 'Sportify',
+                  color: context.colorScheme.black,
+                ),
+              ],
             ),
+          ),
+          body: Stack(
+            children: [
+              BackgroundImage(size: size),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Insets.medium16,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: Insets.xsmall8,
+                    children: [
+                      LoginSignUpContainer(
+                        isLoading: state.apiStatus == ApiStatus.loading,
+                        emailErrorText:
+                            state.email.displayError != null
+                                ? 'Please enter valid email.'
+                                : null,
+                        passwordErrorText:
+                            state.password.displayError != null
+                                ? 'Please enter valid password.'
+                                : null,
+                        isAuthLoginType: state.isAuthLoginType,
+                        onEmailChange: (value) {
+                          context.read<LoginCubit>().onEmailChange(value);
+                        },
+                        onPasswordChange: (value) {
+                          context.read<LoginCubit>().onPasswordChange(value);
+                        },
+                        onGetStartedTap: () {
+                          context.read<LoginCubit>().onSubmit();
+                        },
+                        onGoogleIconTap: () {
+                          context.read<LoginCubit>().onGoogleSignIn();
+                        },
+                        onAuthTypeChange: () {
+                          context.read<LoginCubit>().onAuthTypeChange();
+                        },
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text: 'By procedding you agree to our ',
+                          style: TextStyle(
+                            color: context.colorScheme.black,
+                            fontSize: 14,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'Privacy and Policy',
+                              style: TextStyle(
+                                color: context.colorScheme.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
+    );
+  }
+}
+
+class BackgroundImage extends StatelessWidget {
+  const BackgroundImage({super.key, required this.size});
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Image.asset('assets/skt.jpeg', fit: BoxFit.fitHeight),
+        Image.asset(
+          'assets/sport.jpg',
+          height: size.height / 2,
+          fit: BoxFit.fitHeight,
+        ),
+        Expanded(
+          child: Transform.rotate(
+            angle: math.pi,
+            child: ShaderMask(
+              blendMode: BlendMode.srcOver,
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  end: Alignment.topCenter,
+                  begin: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.grey,
+                    Colors.white,
+                    Colors.white,
+                  ],
+                  // stops: [0.1, 0.5, 0.9],
+                ).createShader(bounds);
+              },
+              child: Image.asset('assets/sport.jpg', fit: BoxFit.fitHeight),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

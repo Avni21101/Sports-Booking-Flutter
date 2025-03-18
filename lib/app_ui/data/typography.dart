@@ -44,7 +44,7 @@ class AppTypographyData extends Equatable {
     ),
     medium: TextStyle(
       fontSize: 20,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w900,
       package: _packageName,
       fontFamily: FontFamily.opensans,
     ),
